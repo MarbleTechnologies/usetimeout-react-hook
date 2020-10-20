@@ -1,7 +1,7 @@
 import { useTimeout, CancelTimer } from './useTimeout';
 import { defaultTimeoutHandler } from './defaultTimeoutHandler';
 
-export type UseTimeoutDefault = (callback: () => void, timeout: number, deps?: unknown[]) => CancelTimer;
+export type UseTimeoutDefault = (callback: () => void, timeout: number, disabled: boolean, deps?: unknown[]) => CancelTimer;
 
 /**
  * useTimeoutDefault is a React.js custom hook that sets a leak-safe timeout and returns
@@ -14,9 +14,10 @@ export type UseTimeoutDefault = (callback: () => void, timeout: number, deps?: u
  * 
  * @param callback the function to be executed after the timeout expires
  * @param timeout the number of milliseconds after which the callback should be triggered
+ * @param disabled whether to disable the timeout or not
  * @param deps useEffect dependencies that should cause the timeout to be reset
  * @return function to cancel the timer before the timeout expires
  */
-export const useTimeoutDefault: UseTimeoutDefault = (callback, timeout, deps = []) => (
-  useTimeout(callback, timeout, defaultTimeoutHandler, deps)
+export const useTimeoutDefault: UseTimeoutDefault = (callback, timeout, disabled = false, deps = []) => (
+  useTimeout(callback, timeout, defaultTimeoutHandler, disabled, deps)
 );

@@ -1,5 +1,5 @@
 {
-  "name": "usetimeout-react-hook",
+  "name": "@MarbleTechnologies/usetimeout-react-hook",
   "version": "1.0.0",
   "description": "React.js custom hook that sets a leak-safe timeout and returns a function to cancel it before the timeout expires.",
   "main": "build/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jkomyno/usetimeout-react-hook.git"
+    "url": "git+https://github.com/MarbleTechnologies/usetimeout-react-hook.git"
   },
   "files": [
     "build",
@@ -24,12 +24,15 @@
     "timeout",
     "cancelable"
   ],
-  "author": "Alberto Schiabel <alberto.schiabel@gmail.com>",
+  "author": "Robert Kim <rkty13@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/jkomyno/usetimeout-react-hook/issues"
+    "url": "https://github.com/MarbleTechnologies/usetimeout-react-hook/issues"
   },
-  "homepage": "https://github.com/jkomyno/usetimeout-react-hook#readme",
+  "homepage": "https://github.com/MarbleTechnologies/usetimeout-react-hook#readme",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
+  },
   "devDependencies": {
     "@testing-library/react-hooks": "^1.1.0",
     "@types/jest": "^24.0.15",
