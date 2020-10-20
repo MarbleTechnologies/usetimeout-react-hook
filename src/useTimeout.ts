@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import { TimeoutHandler } from './TimeoutHandler';
 
 export type CancelTimer = () => void;
-export type UseTimeout = <T>(callback: () => void, timeout: number, timeHandler: TimeoutHandler<T>, deps?: unknown[]) => CancelTimer;
+export type UseTimeout = <T>(callback: () => void, timeout: number, timeHandler: TimeoutHandler<T>, disabled: boolean, deps?: unknown[]) => CancelTimer;
 
 /**
  * useTimeout is a React.js custom hook that sets a leak-safe timeout and returns
@@ -18,10 +18,11 @@ export type UseTimeout = <T>(callback: () => void, timeout: number, timeHandler:
  * @param callback the function to be executed after the timeout expires
  * @param timeout the number of milliseconds after which the callback should be triggered
  * @param timeHandler TimeoutHandler instance that's used to set and clear the timeout
+ * @param disabled whether to disable the timeout or not
  * @param deps useEffect dependencies that should cause the timeout to be reset
  * @return function to cancel the timer before the timeout expires
  */
-export const useTimeout: UseTimeout = (callback, timeout, timeHandler, deps = []) => {
+export const useTimeout: UseTimeout = (callback, timeout, timeHandler, disabled = false, deps = []) => {
   const refCallback = useRef<() => void>();
   const refTimer = useRef<(typeof timeHandler) extends TimeoutHandler<infer R> ? R : never | undefined>();
 
@@ -38,13 +39,17 @@ export const useTimeout: UseTimeout = (callback, timeout, timeHandler, deps = []
    * should be used.
    */
   useEffect(() => {
-    const timerID = timeHandler.setTimeout(refCallback.current!, timeout);
-    refTimer.current = timerID;
+    if (!disabled) {
+      const timerID = timeHandler.setTimeout(refCallback.current!, timeout);
+      refTimer.current = timerID;
 
-    // cleans the timer identified by timerID when the effect is unmounted.
-    return () => timeHandler.clearTimeout(timerID);
+      // cleans the timer identified by timerID when the effect is unmounted.
+      return () => timeHandler.clearTimeout(timerID);
+    } else {
+      return
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, deps);
+  }, [...deps, disabled]);
 
   /**
    * Returns a function that can be used to cancel the current timeout.
